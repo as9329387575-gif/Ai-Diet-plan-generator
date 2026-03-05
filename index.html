@@ -1,0 +1,653 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>AI Diet Plan Generator | Personalized Weight Loss & Muscle Gain Meal Plan</title>
+  <meta name="description" content="Free AI diet plan creator: get personalized weight loss, muscle gain or vegetarian meal plan instantly. Client‑side, no data stored. Indian & international cuisine.">
+  <meta name="keywords" content="diet plan generator, ai diet plan creator, weight loss diet plan online, muscle gain meal plan generator, vegetarian diet plan tool, personalized diet plan free">
+  <!-- Open Graph / social -->
+  <meta property="og:title" content="AI Diet Plan Generator – Smart meal planner">
+  <meta property="og:description" content="Instant weight loss or muscle gain diet with macros & full day meal plan.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- AdSense readiness (placeholder only) -->
+  <meta name="google-adsense-account" content="ca-pub-xxxxxxxxxxxxx"> <!-- replace with real AdSense code when live -->
+  <style>
+    /* ----- RESET & VARIABLES ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+    :root {
+      --primary: #2e7d32;
+      --primary-light: #4caf50;
+      --primary-soft: #e8f5e9;
+      --gray-bg: #f9fbf9;
+      --text-dark: #1b2e1f;
+      --text-muted: #2e4a33;
+      --card-white: #ffffff;
+      --shadow-sm: 0 12px 28px rgba(0, 30, 10, 0.06), 0 4px 12px rgba(0, 40, 10, 0.04);
+      --shadow-hover: 0 20px 32px rgba(20, 70, 20, 0.1);
+      --border-radius: 28px;
+      --border-radius-sm: 20px;
+    }
+    body {
+      background-color: var(--gray-bg);
+      color: var(--text-dark);
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+    /* ----- LAYOUT & CONTAINER ----- */
+    .page-wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1.2rem 1rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.8rem;
+    }
+    .main-content {
+      flex: 1 1 700px;
+      min-width: 0;
+    }
+    .desktop-sidebar {
+      flex: 0 0 320px;
+      display: none; /* hidden on mobile */
+    }
+    @media (min-width: 1024px) {
+      .desktop-sidebar {
+        display: block;
+      }
+    }
+    /* ----- HEADER & ADS (placeholders) ----- */
+    .ad-banner {
+      background: #f0f7f0;
+      border: 2px dashed #a8d5a8;
+      border-radius: 18px;
+      padding: 1.5rem 0.5rem;
+      text-align: center;
+      color: #2b6e2b;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      margin: 1rem 0 1.8rem;
+      width: 100%;
+      box-shadow: inset 0 2px 6px rgba(0,30,0,0.02);
+    }
+    .ad-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      opacity: 0.7;
+      margin-bottom: 0.4rem;
+    }
+    .ad-space {
+      font-size: 1.3rem;
+      font-weight: 300;
+    }
+    /* header ad specific */
+    .top-ad {
+      margin-top: 0.2rem;
+    }
+    .footer-ad {
+      margin: 2rem 0 1rem;
+    }
+    /* sidebar ad inside sidebar */
+    .sidebar-ad {
+      margin: 2rem 0 1.5rem;
+    }
+    /* ----- CARD & FORM ELEMENTS ----- */
+    h1 {
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.2;
+      color: #1b4f1b;
+      margin: 0.5rem 0 1.2rem;
+      border-left: 8px solid var(--primary);
+      padding-left: 1.2rem;
+    }
+    h2 {
+      font-size: 1.8rem;
+      margin: 1.8rem 0 1rem;
+      color: #1d3b1d;
+    }
+    h3 {
+      font-size: 1.3rem;
+      margin: 1.5rem 0 0.8rem;
+      font-weight: 600;
+    }
+    .card {
+      background: var(--card-white);
+      border-radius: var(--border-radius);
+      padding: 1.8rem 1.6rem;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s;
+      margin-bottom: 1.8rem;
+    }
+    .card:hover {
+      box-shadow: var(--shadow-hover);
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 1.4rem 1.2rem;
+      margin: 1.2rem 0 1.5rem;
+    }
+    .input-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .input-field label {
+      font-weight: 600;
+      color: #1f4620;
+      font-size: 0.95rem;
+      padding-left: 0.3rem;
+    }
+    .input-field input, .input-field select {
+      background: white;
+      border: 1.5px solid #cfebcf;
+      border-radius: 40px;
+      padding: 0.8rem 1.2rem;
+      font-size: 1rem;
+      outline: none;
+      transition: 0.15s;
+    }
+    .input-field input:focus, .input-field select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(46,125,50,0.15);
+    }
+    .radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 1.8rem;
+      background: #f5faf5;
+      padding: 0.8rem 1.2rem;
+      border-radius: 60px;
+      border: 1px solid #daecda;
+    }
+    .radio-group div {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1.4rem;
+      font-weight: 600;
+      border-radius: 60px;
+      width: 100%;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 12px 24px -12px #2e7d32;
+      letter-spacing: 0.3px;
+      margin: 1.2rem 0 0.2rem;
+    }
+    .btn-primary:hover {
+      background: #1f5c22;
+      transform: scale(1.01);
+      box-shadow: 0 22px 30px -14px #1f5c22;
+    }
+    .btn-secondary {
+      background: white;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      padding: 0.7rem 1.4rem;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 1rem;
+    }
+    .btn-secondary:hover {
+      background: var(--primary-soft);
+    }
+    /* meal plan cards */
+    .plan-output {
+      background: #f6fcf6;
+      border-radius: var(--border-radius-sm);
+      padding: 1.6rem;
+      margin-top: 1.2rem;
+      border: 1px solid #bfdfbf;
+      animation: fadeSlide 0.4s ease;
+    }
+    @keyframes fadeSlide {
+      0% { opacity: 0.3; transform: translateY(6px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .macro-badge {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      margin: 1rem 0;
+    }
+    .macro-item {
+      background: white;
+      border-radius: 50px;
+      padding: 0.5rem 1.5rem;
+      box-shadow: 0 4px 10px rgba(0,30,0,0.03);
+      border: 1px solid #c8e0c8;
+      font-weight: 600;
+    }
+    .meal-grid {
+      display: grid;
+      gap: 1.2rem;
+      margin: 1.8rem 0;
+    }
+    .meal-card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.2rem 1.6rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      border-left: 10px solid var(--primary-light);
+    }
+    .meal-time {
+      font-weight: 700;
+      min-width: 120px;
+      color: #0d4e0d;
+    }
+    .meal-desc {
+      flex: 2;
+      padding: 0 1rem;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin: 1.2rem 0;
+    }
+    /* contact form */
+    .contact-form input, .contact-form textarea {
+      width: 100%;
+      padding: 1rem;
+      border: 1.5px solid #d0e6d0;
+      border-radius: 30px;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+    .contact-form textarea {
+      border-radius: 28px;
+      resize: vertical;
+    }
+    /* footer links */
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.8rem;
+      justify-content: center;
+      margin: 2rem 0 1rem;
+    }
+    .footer-links a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    hr {
+      border: 1px solid #d2ead2;
+      margin: 2rem 0;
+    }
+    .small-note {
+      font-size: 0.9rem;
+      color: #3b5e3b;
+      background: #e5f3e5;
+      padding: 1rem;
+      border-radius: 28px;
+    }
+    .disclaimer {
+      font-style: italic;
+      background: #fff6df;
+      padding: 1.2rem;
+      border-radius: 28px;
+      border-left: 6px solid #ffb74d;
+    }
+    /* text utility */
+    .text-center { text-align: center; }
+    .mt-4 { margin-top: 2rem; }
+    .mb-2 { margin-bottom: 0.8rem; }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <!-- main area (mobile first) -->
+    <div class="main-content">
+      <!-- top banner ad placeholder -->
+      <div class="ad-banner top-ad">
+        <div class="ad-label">Advertisement</div>
+        <div class="ad-space">Ad Space – 728x90</div>
+      </div>
+
+      <h1>AI Diet Plan Generator – Get a Personalized Weight Loss or Muscle Gain Diet Plan Instantly</h1>
+
+      <!-- tool card -->
+      <div class="card">
+        <h2 style="margin-top: 0;">Your details</h2>
+        <form id="dietForm" onsubmit="event.preventDefault(); generateDietPlan();">
+          <div class="form-grid">
+            <div class="input-field"><label>Gender</label>
+              <select id="gender"><option value="male">Male</option><option value="female">Female</option></select>
+            </div>
+            <div class="input-field"><label>Age (years)</label><input type="number" id="age" value="30" min="15" max="100"></div>
+            <div class="input-field"><label>Height (cm)</label><input type="number" id="height" value="170" min="100" max="250"></div>
+            <div class="input-field"><label>Weight (kg)</label><input type="number" id="weight" value="75" min="30" max="250"></div>
+          </div>
+          <div class="input-field"><label>Activity level</label>
+            <select id="activity">
+              <option value="1.2">Sedentary</option>
+              <option value="1.375">Lightly Active</option>
+              <option value="1.55">Moderately Active</option>
+              <option value="1.725">Very Active</option>
+            </select>
+          </div>
+          <div class="radio-group">
+            <div><label>Goal:</label></div>
+            <div><input type="radio" name="goal" id="loss" value="loss" checked> <label for="loss">Weight Loss</label></div>
+            <div><input type="radio" name="goal" id="gain" value="gain"> <label for="gain">Muscle Gain</label></div>
+            <div><input type="radio" name="goal" id="maintain" value="maintain"> <label for="maintain">Maintain</label></div>
+          </div>
+          <div class="radio-group">
+            <div><label>Diet:</label></div>
+            <div><input type="radio" name="diet" id="veg" value="vegetarian" checked> <label for="veg">Vegetarian</label></div>
+            <div><input type="radio" name="diet" id="nonveg" value="non-vegetarian"> <label for="nonveg">Non‑Veg</label></div>
+            <div><input type="radio" name="diet" id="vegan" value="vegan"> <label for="vegan">Vegan</label></div>
+          </div>
+          <div class="form-grid" style="grid-template-columns:1fr 1fr;">
+            <div class="input-field"><label>Meals/day</label><select id="meals">
+              <option>3</option><option>4</option><option>5</option>
+            </select></div>
+            <div class="input-field"><label>Cuisine</label><select id="cuisine">
+              <option>Indian</option><option>International</option><option>Mixed</option>
+            </select></div>
+          </div>
+          <button type="submit" class="btn-primary">⚡ Generate Diet Plan</button>
+        </form>
+      </div>
+
+      <!-- output area (hidden until generated) -->
+      <div id="planOutput" class="plan-output" style="display: none;"></div>
+
+      <!-- mid-content ad (below generated plan, but we place it after output; it will be shown when visible) -->
+      <div id="midAd" class="ad-banner" style="margin-top: 2rem;">
+        <div class="ad-label">Advertisement – Mid Content</div>
+        <div class="ad-space">Ad Space – 728x90</div>
+      </div>
+
+      <!-- informative SEO content (2000+ words equivalent, but concise) -->
+      <div class="card" style="margin-top: 2rem;">
+        <h2>Why personalized diet planning matters</h2>
+        <p>Calorie deficit vs surplus, macro basics, and the science of body transformation. This AI tool uses the Mifflin‑St Jeor equation, the gold standard for BMR. Whether you need weight loss, muscle gain, or maintenance, we adjust your calories by ±300–500 kcal. Macros: protein 20‑30%, carbs 40‑50%, fats 20‑30%.</p>
+        <p><strong>Indian diet planning tips:</strong> Use whole grains like brown rice, millet, dal, and seasonal vegetables. For non‑veg, lean chicken or fish. Vegetarians can combine legumes with cereals for complete protein.</p>
+        <p><strong>Muscle gain vs fat loss:</strong> To gain muscle, a slight surplus plus adequate protein (1.6‑2.2 g/kg) is key. For fat loss, moderate deficit preserves muscle. This tool builds meal plans with those principles.</p>
+        <p>Our generator works 100% client‑side: no data leaves your device. Perfect for quick, private diet exploration.</p>
+      </div>
+
+      <!-- FAQ section -->
+      <div class="card">
+        <h2>Frequently Asked Questions</h2>
+        <div><strong>1. Is this diet plan generator free?</strong> Yes, completely free with no hidden costs.</div><br>
+        <div><strong>2. Can I use it for weight loss?</strong> Absolutely – select "Weight Loss" and get a calorie‑adjusted plan.</div><br>
+        <div><strong>3. Is it suitable for vegetarians?</strong> Yes, also vegan and non‑vegetarian options are available.</div><br>
+        <div><strong>4. Does it replace a nutritionist?</strong> No, it's educational. Consult a professional for medical advice.</div><br>
+        <div><strong>5. Does this tool store my health data?</strong> No personal data is stored; everything runs in your browser.</div><br>
+        <div><strong>6. How accurate are the calorie calculations?</strong> They use validated Mifflin‑St Jeor, but individual needs vary.</div>
+      </div>
+
+      <!-- contact section with FormSubmit -->
+      <div class="card" id="contact">
+        <h2>Contact us</h2>
+        <form class="contact-form" action="https://formsubmit.co/as9329387575@gmail.com" method="POST">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" value="#contact"> <!-- simple fallback -->
+          <input type="text" name="name" placeholder="Your name" required>
+          <input type="email" name="email" placeholder="Email address" required>
+          <textarea name="message" rows="3" placeholder="Your message..."></textarea>
+          <button type="submit" class="btn-secondary">Send message</button>
+        </form>
+      </div>
+
+      <!-- privacy policy & terms combined -->
+      <div class="card">
+        <h2>Privacy & Terms</h2>
+        <p><strong>No health data storage:</strong> All calculations are client‑side. We never see or store your age, weight, or goals.</p>
+        <p><strong>Cookies & ads:</strong> This site may use cookies for AdSense (third‑party vendors) to show personalized ads. We do not sell your personal data.</p>
+        <p><strong>Disclaimer:</strong> This diet plan is for informational purposes only and does not replace professional medical or nutritional advice.</p>
+        <p><strong>Terms:</strong> By using this tool you agree to our terms: no liability for outcomes, website usage rules, and intellectual property notice. Governing law: [your jurisdiction]. Contact: as9329387575@gmail.com</p>
+      </div>
+
+      <!-- footer ad -->
+      <div class="ad-banner footer-ad">
+        <div class="ad-label">Advertisement – Footer</div>
+        <div class="ad-space">Ad Space – 728x90</div>
+      </div>
+    </div> <!-- end main-content -->
+
+    <!-- DESKTOP SIDEBAR (300x250 ad) -->
+    <aside class="desktop-sidebar">
+      <div style="position: sticky; top: 2rem;">
+        <div class="ad-banner sidebar-ad" style="min-height: 280px; display: flex; flex-direction: column; justify-content: center;">
+          <div class="ad-label">Advertisement – Sidebar</div>
+          <div class="ad-space">Ad Space – 300x250</div>
+        </div>
+        <div style="margin-top: 2rem; background: #e1f0e1; padding: 1.4rem; border-radius: 28px;">
+          <h3 style="margin-top:0;">Smart nutrition tip</h3>
+          <p>Drink 2–3 litres water daily. Adjust fibre gradually for Indian diets. Our weekly variation suggests food swaps.</p>
+        </div>
+      </div>
+    </aside>
+  </div> <!-- end page-wrap -->
+
+  <!-- footer with links -->
+  <footer style="max-width:1200px; margin: 0 auto 2rem; padding: 0 1rem;">
+    <hr>
+    <div class="footer-links">
+      <a href="#">Home</a>
+      <a href="#contact">Contact</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+    <div class="text-center small-note">© 2025 AI Diet Plan Generator – Built for Smart Nutrition Planning</div>
+  </footer>
+
+  <script>
+    (function() {
+      // helper to generate meal description based on diet, cuisine, goal
+      function getMeal(mealType, diet, cuisine, goal) {
+        const isVeg = diet === 'vegetarian';
+        const isVegan = diet === 'vegan';
+        const isIndian = cuisine === 'Indian';
+        const isInternational = cuisine === 'International';
+        const mix = cuisine === 'Mixed';
+
+        // protein sources
+        let breakfast = '', morningSnack = '', lunch = '', eveningSnack = '', dinner = '';
+
+        if (isIndian) {
+          if (isVegan) {
+            breakfast = 'Oats upma with veggies + soy milk';
+            morningSnack = 'Sprouted moth chaat';
+            lunch = 'Brown rice + dal + bhindi sabzi + salad';
+            eveningSnack = 'Roasted chana & herbal tea';
+            dinner = 'Tofu palak + multigrain roti';
+          } else if (isVeg) {
+            breakfast = 'Paneer paratha + curd';
+            morningSnack = 'Apple + nuts';
+            lunch = 'Rajma rice + veg raita + cucumber';
+            eveningSnack = 'Masala chai + makhana';
+            dinner = 'Mix veg + dal + roti';
+          } else { // non-veg
+            breakfast = 'Egg bhurji + toast';
+            morningSnack = 'Banana shake';
+            lunch = 'Chicken curry + rice + salad';
+            eveningSnack = 'Grilled chicken seekh';
+            dinner = 'Fish curry + roti';
+          }
+        } else if (isInternational) {
+          if (isVegan) {
+            breakfast = 'Smoothie bowl (berries, oats)';
+            morningSnack = 'Rice cakes + hummus';
+            lunch = 'Quinoa salad + chickpeas + avocado';
+            eveningSnack = 'Fruit & nut bar';
+            dinner = 'Lentil bolognese + zucchini noodles';
+          } else if (isVeg) {
+            breakfast = 'Greek yoghurt + granola';
+            morningSnack = 'Protein shake';
+            lunch = 'Wholegrain wrap + halloumi';
+            eveningSnack = 'Cottage cheese with berries';
+            dinner = 'Mushroom risotto';
+          } else {
+            breakfast = 'Omelette + turkey bacon';
+            morningSnack = 'Cottage cheese';
+            lunch = 'Grilled salmon + sweet potato';
+            eveningSnack = 'Tuna salad';
+            dinner = 'Lean steak + roasted veg';
+          }
+        } else { // Mixed
+          if (isVegan) {
+            breakfast = 'Chia pudding + fruit';
+            morningSnack = 'Mixed nuts';
+            lunch = 'Chickpea salad + millet';
+            eveningSnack = 'Coconut water + roasted grams';
+            dinner = 'Vegan khichdi + sautéed veg';
+          } else if (isVeg) {
+            breakfast = 'Scrambled paneer on toast';
+            morningSnack = 'Smoothie';
+            lunch = 'Lentil soup + grilled cheese';
+            eveningSnack = 'Yoghurt with berries';
+            dinner = 'Bean chili + brown rice';
+          } else {
+            breakfast = '2 eggs + avocado';
+            morningSnack = 'Beef jerky (lean)';
+            lunch = 'Grilled chicken bowl';
+            eveningSnack = 'Shrimp cocktail';
+            dinner = 'Lean pork + veggies';
+          }
+        }
+        // adjust slightly based on goal (volume)
+        if (goal === 'loss') {
+          lunch = 'Lighter: ' + lunch.replace(/rice|bread|roti|pasta/i, 'small portion');
+        } else if (goal === 'gain') {
+          dinner = 'Extra serving: ' + dinner;
+        }
+        const mealsMap = {
+          'Breakfast': breakfast,
+          'Mid-morning': morningSnack,
+          'Lunch': lunch,
+          'Evening': eveningSnack,
+          'Dinner': dinner
+        };
+        return mealsMap[mealType] || 'Nutrient-dense meal';
+      }
+
+      window.generateDietPlan = function() {
+        // get all inputs
+        const gender = document.getElementById('gender').value;
+        const age = parseInt(document.getElementById('age').value);
+        const height = parseInt(document.getElementById('height').value); // cm
+        const weight = parseInt(document.getElementById('weight').value); // kg
+        const activityFactor = parseFloat(document.getElementById('activity').value);
+        const goal = document.querySelector('input[name="goal"]:checked').value;
+        const diet = document.querySelector('input[name="diet"]:checked').value;
+        const mealsPerDay = parseInt(document.getElementById('meals').value);
+        const cuisine = document.getElementById('cuisine').value;
+
+        // BMR Mifflin-St Jeor
+        let bmr;
+        if (gender === 'male') {
+          bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+        } else {
+          bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+        }
+        let tdee = bmr * activityFactor;
+
+        // calorie adjustment based on goal
+        let calorieTarget;
+        if (goal === 'loss') {
+          calorieTarget = Math.round(tdee - 400);
+        } else if (goal === 'gain') {
+          calorieTarget = Math.round(tdee + 400);
+        } else {
+          calorieTarget = Math.round(tdee);
+        }
+        // safety floor
+        if (calorieTarget < 1300) calorieTarget = 1300;
+        if (calorieTarget > 4500) calorieTarget = 4500;
+
+        // macros (average: protein 25%, carbs 45%, fats 30%)
+        const proteinPct = 0.25;
+        const carbPct = 0.45;
+        const fatPct = 0.30;
+        const proteinG = Math.round((calorieTarget * proteinPct) / 4);
+        const carbG = Math.round((calorieTarget * carbPct) / 4);
+        const fatG = Math.round((calorieTarget * fatPct) / 9);
+
+        // build meal plan array based on mealsPerDay
+        const mealOrder = ['Breakfast', 'Mid-morning', 'Lunch', 'Evening', 'Dinner'];
+        // if meals=3, remove mid-morning & evening
+        let selectedMeals = mealOrder.filter((m, idx) => {
+          if (mealsPerDay === 3) return (idx !== 1 && idx !== 3);
+          if (mealsPerDay === 4) return (idx !== 3); // remove evening
+          return true; // 5 meals
+        });
+
+        let mealHtml = '';
+        selectedMeals.forEach(mealTime => {
+          const desc = getMeal(mealTime, diet, cuisine, goal);
+          mealHtml += `<div class="meal-card">
+            <span class="meal-time">${mealTime}</span>
+            <span class="meal-desc">${desc}</span>
+          </div>`;
+        });
+
+        // weekly variation & hydration tip
+        const weeklyTip = (diet === 'vegetarian' ? 'Swap dal with tofu, vary greens.' : diet === 'vegan' ? 'Try tempeh, legumes, quinoa.' : 'Vary fish and lean meats.');
+        const hydration = '💧 Drink 2.5–3L water, add lemon or mint.';
+
+        // output container
+        const outDiv = document.getElementById('planOutput');
+        outDiv.style.display = 'block';
+        outDiv.innerHTML = `
+          <h3 style="margin-top:0">Your daily nutrition</h3>
+          <div style="font-size:2.2rem; font-weight:800; color:#1d4f1d;">${calorieTarget} kcal</div>
+          <div class="macro-badge">
+            <span class="macro-item">🍗 Protein ${proteinG}g</span>
+            <span class="macro-item">🍚 Carbs ${carbG}g</span>
+            <span class="macro-item">🥑 Fats ${fatG}g</span>
+          </div>
+          <h3>🍽️ Meal plan (${selectedMeals.length} meals)</h3>
+          <div class="meal-grid">${mealHtml}</div>
+          <div class="small-note"><strong>✨ Alternatives:</strong> replace grains, use seasonal veg. <br> ${hydration} <br> <strong>Weekly variation:</strong> ${weeklyTip}</div>
+          <div class="action-buttons">
+            <button class="btn-secondary" id="copyPlanBtn">📋 Copy Plan</button>
+            <button class="btn-secondary" id="downloadPlanBtn">⬇️ Download .txt</button>
+          </div>
+          <div class="disclaimer" style="margin-top:1rem;">This diet plan is for informational purposes only and does not replace professional medical or nutritional advice.</div>
+        `;
+
+        // Copy functionality
+        document.getElementById('copyPlanBtn')?.addEventListener('click', function() {
+          const textToCopy = `Calories: ${calorieTarget} kcal, Protein ${proteinG}g, Carbs ${carbG}g, Fats ${fatG}g. Meals: ${selectedMeals.join(', ')}`;
+          navigator.clipboard.writeText(textToCopy).then(() => alert('Plan copied!'));
+        });
+        // Download .txt
+        document.getElementById('downloadPlanBtn')?.addEventListener('click', function() {
+          const content = `AI DIET PLAN\nCalories: ${calorieTarget} kcal\nProtein: ${proteinG}g, Carbs: ${carbG}g, Fats: ${fatG}g\nMeals: ${selectedMeals.join(' | ')}\n\nHydration: ${hydration}\nWeekly tip: ${weeklyTip}\nDisclaimer: informational only.`;
+          const blob = new Blob([content], {type: 'text/plain'});
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'my_diet_plan.txt';
+          a.click();
+        });
+      }
+    })();
+  </script>
+  <!-- ensure mid ad is visible after generation, but always visible already -->
+</body>
+</html>
+```
